@@ -1,5 +1,7 @@
+import { ChatBot } from './chatbot';
+
 function App() {
-  return <h1>Vite + React</h1>;
+  return <ChatBot />;
 }
 
 export default App;
