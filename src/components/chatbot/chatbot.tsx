@@ -10,9 +10,11 @@ import {
   TextFieldStyled
 } from './chatbot.style';
 
+import { sendMessage } from '../../services/chatbot-services';
+
 interface Message {
   id: number;
-  text: string;
+  text?: string;
   isUser?: boolean;
 }
 
@@ -23,26 +25,36 @@ const CHATBOT_NAME = 'ClonAlvaro';
 export const ChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
+  const [isLoadingMessage, setIsLoadingMessage] = useState<boolean>(false);
 
-  const handleSendMessage = () => {
-    if (inputValue.trim() !== '') {
-      const newMessage: Message = {
-        id: messages.length + 1,
-        text: inputValue,
-        isUser: true
-      };
-      setMessages([...messages, newMessage]);
-      setInputValue('');
+  const handleSendMessage = async (event: React.FormEvent<HTMLDivElement>) => {
+    event.preventDefault();
+
+    setIsLoadingMessage(true);
+
+    if (inputValue.trim() === '') {
+      return;
     }
-  };
 
-  const handleRespond = () => {
-    const newMessage: Message = {
+    const data = await sendMessage(inputValue);
+
+    const newUserMessage: Message = {
       id: messages.length + 1,
-      text: 'This is a response from the chatbot.',
+      text: inputValue,
+      isUser: true
+    };
+
+    const newBotMessage: Message = {
+      id: messages.length + 2,
+      text: data?.text,
       isUser: false
     };
-    setMessages([...messages, newMessage]);
+
+    setMessages([...messages, newUserMessage, newBotMessage]);
+
+    setInputValue('');
+
+    setIsLoadingMessage(false);
   };
 
   return (
@@ -56,7 +68,7 @@ export const ChatBot = () => {
                 sx={{
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: message.isUser ? 'flex-start' : 'flex-end'
+                  alignItems: message.isUser ? 'flex-end' : 'flex-start'
                 }}
               >
                 <UserMessage key={message.id} isUser={message.isUser}>
@@ -69,26 +81,20 @@ export const ChatBot = () => {
                     }
                   />
                 </UserMessage>
+                {isLoadingMessage && <Typography>Loading...</Typography>}
               </Box>
             ))}
           </List>
         </ChatContainer>
-        <InputContainer>
+        <InputContainer component='form' onSubmit={handleSendMessage}>
           <TextFieldStyled
             variant='outlined'
             placeholder='Type your message...'
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={handleSendMessage}
-          >
+          <Button variant='contained' color='primary' type='submit'>
             Send
-          </Button>
-          <Button variant='contained' color='secondary' onClick={handleRespond}>
-            Receive
           </Button>
         </InputContainer>
       </RootContainer>
