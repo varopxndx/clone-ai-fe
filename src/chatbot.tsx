@@ -1,6 +1,5 @@
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 import {
-  Typography,
   TextField,
   Button,
   Paper,
@@ -11,15 +10,12 @@ import {
   styled
 } from '@mui/material';
 
+import { AppBar } from './components/app-bar';
+
 const RootContainer = styled(Paper)`
   display: flex;
   flex-direction: column;
-  height: 100vh;
-`;
-
-const Title = styled(Typography)<{ component?: ReactElement | string }>`
-  text-align: center;
-  margin: ${(props) => props.theme.spacing(2, 0)};
+  height: calc(100vh - 68.5px);
 `;
 
 const ChatContainer = styled(Box)`
@@ -27,6 +23,22 @@ const ChatContainer = styled(Box)`
   overflow: auto;
   padding: ${(props) => props.theme.spacing(2)};
 `;
+
+const UserMessage = styled(ListItem, {
+  shouldForwardProp: (prop) => prop !== 'isUser'
+})(({ isUser }: { isUser?: boolean }) => ({
+  width: '100%',
+  backgroundColor: '#f0f0f0',
+  borderRadius: '5px',
+
+  '@media (min-width: 600px)': {
+    width: '50%'
+  },
+
+  ...(isUser && {
+    backgroundColor: '#e3f2fd'
+  })
+}));
 
 const InputContainer = styled(Box)`
   display: flex;
@@ -60,30 +72,34 @@ export const ChatBot = () => {
   };
 
   return (
-    <RootContainer elevation={3}>
-      <Title variant='h4' component='h1'>
-        Clone AI - Chat
-      </Title>
-      <ChatContainer>
-        <List>
-          {messages.map((message) => (
-            <ListItem key={message.id}>
-              <ListItemText primary={message.text} />
-            </ListItem>
-          ))}
-        </List>
-      </ChatContainer>
-      <InputContainer>
-        <TextFieldStyled
-          variant='outlined'
-          placeholder='Type your message...'
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-        />
-        <Button variant='contained' color='primary' onClick={handleSendMessage}>
-          Send
-        </Button>
-      </InputContainer>
-    </RootContainer>
+    <>
+      <AppBar />
+      <RootContainer elevation={3}>
+        <ChatContainer>
+          <List>
+            {messages.map((message) => (
+              <UserMessage key={message.id} isUser>
+                <ListItemText primary={message.text} />
+              </UserMessage>
+            ))}
+          </List>
+        </ChatContainer>
+        <InputContainer>
+          <TextFieldStyled
+            variant='outlined'
+            placeholder='Type your message...'
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+          />
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={handleSendMessage}
+          >
+            Send
+          </Button>
+        </InputContainer>
+      </RootContainer>
+    </>
   );
 };
