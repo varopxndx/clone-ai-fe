@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Box, List, ListItemText } from '@mui/material';
+import { Button, Box, List, ListItemText, Typography } from '@mui/material';
 
 import { AppBar } from '../app-bar';
 import {
@@ -15,6 +15,10 @@ interface Message {
   text: string;
   isUser?: boolean;
 }
+
+const USER_NAME = 'Renato';
+
+const CHATBOT_NAME = 'ClonAlvaro';
 
 export const ChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -56,7 +60,14 @@ export const ChatBot = () => {
                 }}
               >
                 <UserMessage key={message.id} isUser={message.isUser}>
-                  <ListItemText primary={message.text} />
+                  <ListItemText
+                    primary={message.text}
+                    secondary={
+                      <Typography variant='caption' color='text.primary'>
+                        {message.isUser ? USER_NAME : CHATBOT_NAME}
+                      </Typography>
+                    }
+                  />
                 </UserMessage>
               </Box>
             ))}

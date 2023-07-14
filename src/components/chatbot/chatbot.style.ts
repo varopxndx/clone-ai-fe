@@ -19,6 +19,7 @@ export const UserMessage = styled(ListItem, {
   backgroundColor: '#f0f0f0',
   borderRadius: '5px',
   marginBottom: '8px',
+  textAlign: isUser ? 'left' : 'right',
 
   '@media (min-width: 600px)': {
     width: '50%'
