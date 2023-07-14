@@ -6,7 +6,6 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  Container,
   Avatar,
   Button,
   Tooltip,
@@ -43,7 +42,7 @@ export const AppBar = () => {
 
   return (
     <MuiAppBar position='static'>
-      <Container maxWidth='xl'>
+      <Box sx={{ marginX: 2 }}>
         <Toolbar disableGutters>
           <Typography variant='h6' noWrap mr={2}>
             Clone AI
@@ -133,7 +132,7 @@ export const AppBar = () => {
             </Menu>
           </Box>
         </Toolbar>
-      </Container>
+      </Box>
     </MuiAppBar>
   );
 };

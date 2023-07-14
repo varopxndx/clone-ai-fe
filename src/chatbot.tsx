@@ -30,6 +30,7 @@ const UserMessage = styled(ListItem, {
   width: '100%',
   backgroundColor: '#f0f0f0',
   borderRadius: '5px',
+  marginBottom: '8px',
 
   '@media (min-width: 600px)': {
     width: '50%'
@@ -54,6 +55,7 @@ const TextFieldStyled = styled(TextField)`
 interface Message {
   id: number;
   text: string;
+  isUser?: boolean;
 }
 
 export const ChatBot = () => {
@@ -64,11 +66,21 @@ export const ChatBot = () => {
     if (inputValue.trim() !== '') {
       const newMessage: Message = {
         id: messages.length + 1,
-        text: inputValue
+        text: inputValue,
+        isUser: true
       };
       setMessages([...messages, newMessage]);
       setInputValue('');
     }
+  };
+
+  const handleRespond = () => {
+    const newMessage: Message = {
+      id: messages.length + 1,
+      text: 'This is a response from the chatbot.',
+      isUser: false
+    };
+    setMessages([...messages, newMessage]);
   };
 
   return (
@@ -78,9 +90,17 @@ export const ChatBot = () => {
         <ChatContainer>
           <List>
             {messages.map((message) => (
-              <UserMessage key={message.id} isUser>
-                <ListItemText primary={message.text} />
-              </UserMessage>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: message.isUser ? 'flex-start' : 'flex-end'
+                }}
+              >
+                <UserMessage key={message.id} isUser={message.isUser}>
+                  <ListItemText primary={message.text} />
+                </UserMessage>
+              </Box>
             ))}
           </List>
         </ChatContainer>
@@ -97,6 +117,9 @@ export const ChatBot = () => {
             onClick={handleSendMessage}
           >
             Send
+          </Button>
+          <Button variant='contained' color='secondary' onClick={handleRespond}>
+            Receive
           </Button>
         </InputContainer>
       </RootContainer>
