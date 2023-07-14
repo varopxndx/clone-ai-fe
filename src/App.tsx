@@ -1,4 +1,4 @@
-import { ChatBot } from './chatbot';
+import { ChatBot } from './components/chatbot/chatbot';
 
 function App() {
   return <ChatBot />;

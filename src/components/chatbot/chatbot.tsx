@@ -1,56 +1,14 @@
 import { useState } from 'react';
+import { Button, Box, List, ListItemText } from '@mui/material';
+
+import { AppBar } from '../app-bar';
 import {
-  TextField,
-  Button,
-  Paper,
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  styled
-} from '@mui/material';
-
-import { AppBar } from './components/app-bar';
-
-const RootContainer = styled(Paper)`
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 68.5px);
-`;
-
-const ChatContainer = styled(Box)`
-  flex-grow: 1;
-  overflow: auto;
-  padding: ${(props) => props.theme.spacing(2)};
-`;
-
-const UserMessage = styled(ListItem, {
-  shouldForwardProp: (prop) => prop !== 'isUser'
-})(({ isUser }: { isUser?: boolean }) => ({
-  width: '100%',
-  backgroundColor: '#f0f0f0',
-  borderRadius: '5px',
-  marginBottom: '8px',
-
-  '@media (min-width: 600px)': {
-    width: '50%'
-  },
-
-  ...(isUser && {
-    backgroundColor: '#e3f2fd'
-  })
-}));
-
-const InputContainer = styled(Box)`
-  display: flex;
-  align-items: center;
-  padding: ${(props) => props.theme.spacing(1, 2)};
-`;
-
-const TextFieldStyled = styled(TextField)`
-  flex-grow: 1;
-  margin-right: ${(props) => props.theme.spacing(2)};
-`;
+  RootContainer,
+  ChatContainer,
+  UserMessage,
+  InputContainer,
+  TextFieldStyled
+} from './chatbot.style';
 
 interface Message {
   id: number;
