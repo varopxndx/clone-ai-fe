@@ -81,10 +81,10 @@ export const ChatBot = () => {
                     }
                   />
                 </UserMessage>
-                {isLoadingMessage && <Typography>Loading...</Typography>}
               </Box>
             ))}
           </List>
+          {isLoadingMessage && <Typography>Loading...</Typography>}
         </ChatContainer>
         <InputContainer component='form' onSubmit={handleSendMessage}>
           <TextFieldStyled
